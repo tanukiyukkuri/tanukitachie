@@ -1,3 +1,66 @@
+const analyticsConfig = window.ANALYTICS_CONFIG || {};
+const analyticsState = {
+  initialized: false,
+  sectionViews: new Set(),
+};
+
+const loadGa4 = (measurementId) => {
+  if (!measurementId || window.gtag) {
+    return;
+  }
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  window.gtag("js", new Date());
+  window.gtag("config", measurementId, {
+    send_page_view: false,
+  });
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`;
+  document.head.appendChild(script);
+};
+
+const sendAnalyticsEvent = (eventName, params = {}) => {
+  const payload = {
+    page_location: window.location.href,
+    page_title: document.title,
+    ...params,
+  };
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, payload);
+  }
+
+  if (analyticsConfig.debug) {
+    console.debug("[analytics]", eventName, payload);
+  }
+};
+
+const trackSectionView = (sectionId, sectionName) => {
+  if (analyticsState.sectionViews.has(sectionId)) {
+    return;
+  }
+
+  analyticsState.sectionViews.add(sectionId);
+  sendAnalyticsEvent("section_view", {
+    section_id: sectionId,
+    section_name: sectionName,
+  });
+};
+
+if (!analyticsState.initialized) {
+  analyticsState.initialized = true;
+  loadGa4(analyticsConfig.ga4MeasurementId);
+  sendAnalyticsEvent("page_view", {
+    page_path: window.location.pathname,
+  });
+}
+
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -16,4 +79,284 @@ const observer = new IntersectionObserver(
 document.querySelectorAll("[data-reveal]").forEach((element, index) => {
   element.style.transitionDelay = `${Math.min(index * 70, 280)}ms`;
   observer.observe(element);
+});
+
+const sampleToggles = document.querySelectorAll("[data-sample-set]");
+const sampleImages = document.querySelectorAll(".sample-image[data-normal][data-mirror]");
+const preview = document.getElementById("imagePreview");
+const previewContent = document.getElementById("imagePreviewContent");
+const previewClose = document.querySelector(".image-preview-close");
+const previewPrev = document.querySelector(".image-preview-prev");
+const previewNext = document.querySelector(".image-preview-next");
+let currentPreviewIndex = -1;
+let currentSampleSet = "normal";
+
+const applySampleSet = (setName) => {
+  currentSampleSet = setName;
+
+  sampleToggles.forEach((toggle) => {
+    toggle.classList.toggle("is-active", toggle.dataset.sampleSet === setName);
+  });
+
+  sampleImages.forEach((image) => {
+    image.src = setName === "mirror" ? image.dataset.mirror : image.dataset.normal;
+  });
+
+  if (currentPreviewIndex !== -1) {
+    const image = sampleImages[currentPreviewIndex];
+    previewContent.src = setName === "mirror" ? image.dataset.mirror : image.dataset.normal;
+    previewContent.alt = image.alt;
+  }
+};
+
+sampleToggles.forEach((button) => {
+  button.addEventListener("click", () => {
+    applySampleSet(button.dataset.sampleSet);
+  });
+});
+
+const closePreview = () => {
+  preview.classList.add("is-hidden");
+  preview.setAttribute("aria-hidden", "true");
+  previewContent.src = "";
+  previewContent.alt = "";
+  currentPreviewIndex = -1;
+};
+
+const openPreview = (index) => {
+  const image = sampleImages[index];
+  if (!image) {
+    return;
+  }
+  currentPreviewIndex = index;
+  previewContent.src = currentSampleSet === "mirror" ? image.dataset.mirror : image.dataset.normal;
+  previewContent.alt = image.alt;
+  preview.classList.remove("is-hidden");
+  preview.setAttribute("aria-hidden", "false");
+};
+
+const movePreview = (direction) => {
+  if (currentPreviewIndex === -1) {
+    return;
+  }
+  const nextIndex = (currentPreviewIndex + direction + sampleImages.length) % sampleImages.length;
+  openPreview(nextIndex);
+};
+
+sampleImages.forEach((image) => {
+  image.addEventListener("click", () => {
+    openPreview(Array.from(sampleImages).indexOf(image));
+  });
+});
+
+preview.addEventListener("click", (event) => {
+  if (event.target === preview) {
+    closePreview();
+  }
+});
+
+previewClose.addEventListener("click", closePreview);
+previewPrev.addEventListener("click", () => movePreview(-1));
+previewNext.addEventListener("click", () => movePreview(1));
+
+document.addEventListener("keydown", (event) => {
+  if (preview.classList.contains("is-hidden")) {
+    return;
+  }
+  if (event.key === "Escape") {
+    closePreview();
+  } else if (event.key === "ArrowLeft") {
+    movePreview(-1);
+  } else if (event.key === "ArrowRight") {
+    movePreview(1);
+  }
+});
+
+const trackedLinks = document.querySelectorAll("[data-track-click]");
+const interstitialTriggers = document.querySelectorAll("[data-interstitial-target]");
+const downloadModal = document.getElementById("downloadModal");
+const downloadCountdown = document.getElementById("downloadCountdown");
+const downloadCountdownLabel = document.getElementById("downloadCountdownLabel");
+const downloadCloseButton = document.getElementById("downloadCloseButton");
+const downloadAdLink = document.getElementById("downloadAdLink");
+let downloadTimerId = null;
+let countdownTimerId = null;
+let downloadRemainingSeconds = 5;
+let activeInterstitialTarget = null;
+
+trackedLinks.forEach((element) => {
+  element.addEventListener("click", () => {
+    sendAnalyticsEvent("select_content", {
+      content_type: "link",
+      content_id: element.dataset.trackClick,
+      link_url: element.href || "",
+      link_text: element.textContent.trim(),
+    });
+  });
+});
+
+if (downloadAdLink) {
+  if (analyticsConfig.sponsorUrl) {
+    downloadAdLink.href = analyticsConfig.sponsorUrl;
+  } else {
+    downloadAdLink.removeAttribute("href");
+    downloadAdLink.removeAttribute("target");
+    downloadAdLink.classList.add("is-disabled");
+  }
+
+  downloadAdLink.addEventListener("click", (event) => {
+    if (!analyticsConfig.sponsorUrl) {
+      event.preventDefault();
+      return;
+    }
+
+    event.preventDefault();
+    window.open(analyticsConfig.sponsorUrl, "_blank", "noopener,noreferrer");
+  });
+}
+
+const resetDownloadCountdown = () => {
+  downloadRemainingSeconds = 5;
+  if (downloadCountdown) {
+    downloadCountdown.textContent = String(downloadRemainingSeconds);
+  }
+};
+
+const clearDownloadTimers = () => {
+  window.clearTimeout(downloadTimerId);
+  window.clearInterval(countdownTimerId);
+  downloadTimerId = null;
+  countdownTimerId = null;
+};
+
+const closeDownloadModal = () => {
+  if (!downloadModal) {
+    return;
+  }
+
+  clearDownloadTimers();
+  resetDownloadCountdown();
+  activeInterstitialTarget = null;
+  downloadModal.classList.add("is-hidden");
+  downloadModal.setAttribute("aria-hidden", "true");
+};
+
+const startInterstitialNavigation = () => {
+  if (!activeInterstitialTarget) {
+    return;
+  }
+
+  const target = activeInterstitialTarget;
+  clearDownloadTimers();
+  closeDownloadModal();
+
+  if (target.dataset.interstitialTarget === "download") {
+    sendAnalyticsEvent("file_download", {
+      file_name: "tanuki-yukkuri.zip",
+      file_extension: "zip",
+      link_url: target.href,
+    });
+    window.location.href = target.href;
+    return;
+  }
+
+  sendAnalyticsEvent("interstitial_navigation", {
+    destination_type: target.dataset.interstitialTarget || "",
+    link_url: target.href,
+  });
+  window.location.href = target.href;
+};
+
+const openDownloadModal = (trigger) => {
+  if (!downloadModal) {
+    return;
+  }
+
+  activeInterstitialTarget = trigger;
+  clearDownloadTimers();
+  resetDownloadCountdown();
+  if (downloadCountdownLabel) {
+    downloadCountdownLabel.textContent = trigger.dataset.interstitialLabel || "ダウンロードを開始します";
+  }
+  downloadModal.classList.remove("is-hidden");
+  downloadModal.setAttribute("aria-hidden", "false");
+  sendAnalyticsEvent("download_interstitial_view", {
+    destination: trigger ? trigger.href : "",
+    destination_type: trigger ? trigger.dataset.interstitialTarget || "" : "",
+  });
+
+  countdownTimerId = window.setInterval(() => {
+    downloadRemainingSeconds -= 1;
+    if (downloadCountdown) {
+      downloadCountdown.textContent = String(Math.max(downloadRemainingSeconds, 0));
+    }
+  }, 1000);
+
+  downloadTimerId = window.setTimeout(() => {
+    startInterstitialNavigation();
+  }, 5000);
+};
+
+interstitialTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    openDownloadModal(trigger);
+  });
+});
+
+if (downloadCloseButton) {
+  downloadCloseButton.addEventListener("click", () => {
+    sendAnalyticsEvent("download_interstitial_close", {
+      destination: activeInterstitialTarget ? activeInterstitialTarget.href : "",
+      destination_type: activeInterstitialTarget ? activeInterstitialTarget.dataset.interstitialTarget || "" : "",
+    });
+    closeDownloadModal();
+  });
+}
+
+if (downloadModal) {
+  downloadModal.addEventListener("click", (event) => {
+    if (event.target === downloadModal) {
+      sendAnalyticsEvent("download_interstitial_close", {
+        destination: activeInterstitialTarget ? activeInterstitialTarget.href : "",
+        destination_type: activeInterstitialTarget ? activeInterstitialTarget.dataset.interstitialTarget || "" : "",
+      });
+      closeDownloadModal();
+    }
+  });
+}
+
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      const section = entry.target;
+      trackSectionView(section.id, section.dataset.sectionName || section.id);
+      sectionObserver.unobserve(section);
+    });
+  },
+  {
+    threshold: 0.45,
+  }
+);
+
+document.querySelectorAll("section[id]").forEach((section) => {
+  sectionObserver.observe(section);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (!downloadModal || downloadModal.classList.contains("is-hidden")) {
+    return;
+  }
+
+  if (event.key === "Escape") {
+    sendAnalyticsEvent("download_interstitial_close", {
+      destination: activeInterstitialTarget ? activeInterstitialTarget.href : "",
+      destination_type: activeInterstitialTarget ? activeInterstitialTarget.dataset.interstitialTarget || "" : "",
+    });
+    closeDownloadModal();
+  }
 });

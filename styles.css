@@ -23,7 +23,6 @@ html {
 #contents,
 #terms,
 #exceptions,
-#credit,
 #faq,
 #top-download {
   scroll-margin-top: 72px;
@@ -85,14 +84,12 @@ a:hover {
 }
 
 .brand-mark {
-  display: inline-grid;
-  place-items: center;
+  display: block;
   width: 28px;
   height: 28px;
   border: 1px solid var(--line-strong);
   background: var(--accent-soft);
-  font-family: "MS Mincho", "Shippori Mincho", serif;
-  font-size: 0.95rem;
+  object-fit: cover;
 }
 
 .brand-text {
@@ -114,18 +111,17 @@ a:hover {
   font-weight: 700;
 }
 
-.hero,
+.hero {
+  margin-bottom: 14px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+}
+
 .info-strip,
 .feature-grid,
 .contents-layout,
 .terms-grid {
   display: block;
-}
-
-.hero {
-  margin-bottom: 14px;
-  border: 1px solid var(--line-strong);
-  background: var(--paper);
 }
 
 .hero-copy,
@@ -161,6 +157,10 @@ a:hover {
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   line-height: 1.35;
   font-weight: 700;
+}
+
+.hero h1 {
+  text-align: center;
 }
 
 .hero-lead,
@@ -219,8 +219,12 @@ a:hover {
 }
 
 .hero-visual {
-  padding: 12px 16px 16px;
+  padding: 8px 12px 10px;
   border-top: 1px solid var(--line);
+}
+
+.hero-samples {
+  margin-top: 0;
 }
 
 .visual-card {
@@ -237,7 +241,7 @@ a:hover {
 .card-label,
 .visual-card p,
 .spec-title {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: var(--accent);
   font-size: 0.82rem;
   font-weight: 700;
@@ -248,85 +252,53 @@ a:hover {
   font-weight: 700;
 }
 
-.yukkuri-face {
-  position: relative;
-  width: min(100%, 280px);
-  aspect-ratio: 1;
-  margin: 12px auto 0;
-  border: 1px solid #835132;
-  border-radius: 48%;
-  background:
-    radial-gradient(circle at 50% 68%, rgba(255, 255, 255, 0.92) 0 20%, transparent 20%),
-    linear-gradient(180deg, #ba764b 0%, #955430 100%);
+.sample-switch {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
 }
 
-.ear,
-.eye,
-.nose,
-.cheek {
-  position: absolute;
+.sample-row + .sample-row {
+  margin-top: 10px;
 }
 
-.ear {
-  top: -18px;
-  width: 76px;
-  height: 76px;
-  border: 1px solid #6f3f23;
-  border-radius: 24% 76% 20% 80%;
-  background: linear-gradient(160deg, #9d613a, #74411f);
-  z-index: -1;
+.sample-row-label {
+  margin: 0 0 2px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
-.ear-left {
-  left: 18px;
-  transform: rotate(-18deg);
+.sample-toggle {
+  padding: 6px 12px;
+  border: 1px solid var(--line-strong);
+  background: #fffaf0;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
 }
 
-.ear-right {
-  right: 18px;
-  transform: scaleX(-1) rotate(-18deg);
+.sample-toggle.is-active {
+  background: #f2dfba;
 }
 
-.eye {
-  top: 41%;
-  width: 40px;
-  height: 24px;
-  border-radius: 50%;
-  background: #2f2119;
+.sample-gallery {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 6px;
+  align-items: end;
 }
 
-.eye-left {
-  left: 29%;
-}
-
-.eye-right {
-  right: 29%;
-}
-
-.nose {
-  left: 50%;
-  top: 56%;
-  width: 22px;
-  height: 14px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: #3b2418;
-}
-
-.cheek {
-  top: 56%;
-  width: 54px;
-  height: 26px;
-  border-radius: 50%;
-  background: rgba(246, 189, 169, 0.38);
-}
-
-.cheek-left {
-  left: 18%;
-}
-
-.cheek-right {
-  right: 18%;
+.sample-image {
+  display: block;
+  width: 132%;
+  max-width: none;
+  height: auto;
+  background: transparent;
+  margin-left: -16%;
+  cursor: zoom-in;
 }
 
 .info-strip {
@@ -336,6 +308,8 @@ a:hover {
 }
 
 .info-strip > div {
+  display: grid;
+  gap: 4px;
   padding: 10px 14px;
 }
 
@@ -344,10 +318,14 @@ a:hover {
 }
 
 .info-label {
-  display: inline-block;
-  min-width: 92px;
+  display: block;
   font-weight: 700;
   color: var(--accent);
+}
+
+.info-strip strong {
+  display: block;
+  line-height: 1.5;
 }
 
 .section,
@@ -449,114 +427,250 @@ a:hover {
 .support-lead {
   margin: 0 0 12px;
   color: var(--muted);
-}
-
-.support-links {
-  display: grid;
-  gap: 10px;
-}
-
-.support-subheading {
-  margin: 0;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.support-banner {
-  display: block;
-  padding: 14px;
-  border: 1px solid var(--line-strong);
-  background: #fff6df;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.support-banner:hover {
-  color: var(--ink);
-  background: #fff0cf;
-}
-
-.support-banner-label {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--accent);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.support-banner strong,
-.support-notes strong {
-  font-weight: 700;
-}
-
-.support-banner span:last-child,
-.support-notes p {
-  display: block;
-  margin-top: 6px;
-  color: var(--muted);
-}
-
-.support-notes {
-  padding: 10px 12px;
-  border: 1px solid var(--line);
-  background: var(--paper-2);
-}
-
-.support-notes p {
-  margin: 0;
-}
-
-.support-notes p + p {
-  margin-top: 6px;
+  text-align: center;
 }
 
 .is-hidden {
   display: none;
 }
 
-.sponsor-preview {
-  background: #fffdf7;
-}
-
-.tool-banner-row {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: nowrap;
-}
-
-.tool-banner {
-  display: block;
-  flex: 0 0 auto;
-  border: 1px solid #cfcfcf;
-  background: #f4f4f4;
-  text-decoration: none;
-}
-
-.tool-banner:hover {
-  background: #efefef;
-}
-
-.tool-banner-image {
-  display: block;
-  width: 260px;
-  max-width: none;
-  height: auto;
-}
-
-.tool-banner-copy {
-  margin: 0;
-  flex: 0 1 auto;
-  color: var(--muted);
-  line-height: 1.7;
-  font-size: 0.95rem;
-  white-space: nowrap;
-}
-
 [data-reveal] {
   opacity: 1;
   transform: none;
   transition: none;
+}
+
+.image-preview {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(36, 27, 18, 0.8);
+}
+
+.image-preview.is-hidden {
+  display: none;
+}
+
+.image-preview-content {
+  display: block;
+  max-width: min(90vw, 1100px);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  border: 1px solid rgba(255, 248, 232, 0.6);
+  background: #fbf6ea;
+}
+
+.image-preview-switch {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  gap: 8px;
+}
+
+.image-preview-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  background: #fff7e7;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.image-preview-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  background: #fff7e7;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.image-preview-prev {
+  left: 16px;
+}
+
+.image-preview-next {
+  right: 16px;
+}
+
+.download-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(32, 28, 24, 0.58);
+  backdrop-filter: blur(8px);
+}
+
+.download-modal.is-hidden {
+  display: none;
+}
+
+.download-modal-countline {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #fffdf8;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.download-modal-card {
+  position: relative;
+  width: min(460px, calc(100% - 28px));
+  min-height: 0;
+  padding: 26px 26px 32px;
+  border-radius: 14px;
+  background: #fffdfa;
+  box-shadow: 0 22px 48px rgba(20, 15, 12, 0.28);
+  text-align: center;
+}
+
+.download-modal-copy,
+.download-modal-status {
+  margin: 0;
+  color: var(--muted);
+}
+
+.download-modal-card h2 {
+  margin: 22px 0 0;
+  font-family: "MS PGothic", "Zen Kaku Gothic New", sans-serif;
+  color: var(--ink);
+  font-size: 1.8rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.download-modal-subtitle {
+  margin: 22px 0 0;
+  color: #8a8378;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.download-modal-copy {
+  max-width: 24em;
+  margin: 22px auto 0;
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.download-ad {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.download-ad:hover {
+  color: var(--ink);
+}
+
+.download-ad.is-disabled {
+  cursor: default;
+}
+
+.download-ad.is-disabled:hover {
+  background: transparent;
+}
+
+.download-ad-image {
+  display: block;
+  width: min(100%, 280px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 10px 24px rgba(30, 24, 20, 0.14);
+}
+
+.download-ad-title {
+  display: block;
+  margin-top: 14px;
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.download-ad-copy,
+.download-ad-title,
+.download-ad-button {
+  text-align: left;
+}
+
+.download-ad-copy {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.download-ad-button {
+  position: absolute;
+  right: 0;
+  bottom: -34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  padding: 8px 14px;
+  border: 1px solid #cbb79f;
+  border-radius: 999px;
+  background: #fff7ea;
+  color: #7a5f47;
+  font-size: 0.92rem;
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgba(120, 89, 58, 0.12);
+}
+
+.download-ad-button::after {
+  content: "›";
+  margin-left: 6px;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.download-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  color: #8a8378;
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.download-modal-close:hover {
+  color: var(--ink);
 }
 
 @media (max-width: 760px) {
@@ -577,16 +691,30 @@ a:hover {
     grid-template-columns: 1fr;
   }
 
-  .tool-banner-row {
-    display: block;
-  }
-
-  .tool-banner-copy {
-    margin-top: 10px;
-    white-space: normal;
-  }
-
   .hero h1 {
     font-size: 1.65rem;
+  }
+
+  .download-modal-card {
+    width: min(420px, calc(100% - 24px));
+    min-height: 0;
+    padding: 22px 18px 28px;
+  }
+
+  .download-modal-card h2 {
+    font-size: 1.55rem;
+  }
+
+  .download-modal-close {
+    top: 6px;
+    right: 6px;
+  }
+
+  .download-modal-countline {
+    top: 16%;
+  }
+
+  .download-ad-button {
+    bottom: -30px;
   }
 }
