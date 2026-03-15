@@ -2,6 +2,7 @@ const analyticsConfig = window.ANALYTICS_CONFIG || {};
 const analyticsState = {
   initialized: false,
   sectionViews: new Set(),
+  scrollMilestones: new Set(),
 };
 
 const loadGa4 = (measurementId) => {
@@ -39,6 +40,17 @@ const sendAnalyticsEvent = (eventName, params = {}) => {
   if (analyticsConfig.debug) {
     console.debug("[analytics]", eventName, payload);
   }
+};
+
+const trackScrollMilestone = (milestone) => {
+  if (analyticsState.scrollMilestones.has(milestone)) {
+    return;
+  }
+
+  analyticsState.scrollMilestones.add(milestone);
+  sendAnalyticsEvent("scroll_depth", {
+    percent_scrolled: milestone,
+  });
 };
 
 const trackSectionView = (sectionId, sectionName) => {
@@ -112,6 +124,10 @@ const applySampleSet = (setName) => {
 sampleToggles.forEach((button) => {
   button.addEventListener("click", () => {
     applySampleSet(button.dataset.sampleSet);
+    sendAnalyticsEvent("sample_toggle", {
+      sample_set: button.dataset.sampleSet,
+      toggle_context: button.dataset.previewToggle === "true" ? "preview" : "gallery",
+    });
   });
 });
 
@@ -133,6 +149,11 @@ const openPreview = (index) => {
   previewContent.alt = image.alt;
   preview.classList.remove("is-hidden");
   preview.setAttribute("aria-hidden", "false");
+  sendAnalyticsEvent("sample_preview_open", {
+    sample_index: index + 1,
+    sample_alt: image.alt,
+    sample_set: currentSampleSet,
+  });
 };
 
 const movePreview = (direction) => {
@@ -325,6 +346,28 @@ if (downloadModal) {
     }
   });
 }
+
+window.addEventListener(
+  "scroll",
+  () => {
+    const scrollTop = window.scrollY;
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+    if (scrollableHeight <= 0) {
+      trackScrollMilestone(100);
+      return;
+    }
+
+    const percentScrolled = Math.round((scrollTop / scrollableHeight) * 100);
+
+    [25, 50, 75, 100].forEach((milestone) => {
+      if (percentScrolled >= milestone) {
+        trackScrollMilestone(milestone);
+      }
+    });
+  },
+  { passive: true }
+);
 
 const sectionObserver = new IntersectionObserver(
   (entries) => {
