@@ -286,21 +286,19 @@ a:hover {
 .sample-gallery {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  gap: 0;
   margin-top: 6px;
-  align-items: start;
-  overflow: hidden;
+  align-items: end;
 }
 
 .sample-image {
   display: block;
-  width: 100%;
-  max-width: 100%;
+  width: 132%;
+  max-width: none;
   height: auto;
   background: transparent;
-  margin-left: 0;
+  margin-left: -16%;
   cursor: zoom-in;
-  object-fit: contain;
 }
 
 .info-strip {
@@ -695,10 +693,6 @@ a:hover {
 
   .hero h1 {
     font-size: 1.65rem;
-  }
-
-  .sample-gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .download-modal-card {
