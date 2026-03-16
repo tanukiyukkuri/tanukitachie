@@ -166,21 +166,33 @@ a:hover {
 html.is-windows body {
   font-family: "Noto Sans JP", "Yu Gothic", "YuGothic", "Meiryo", sans-serif;
   font-weight: 500;
+  color: #2b241e;
 }
 
 html.is-windows .hero h1,
 html.is-windows .section-heading h2,
 html.is-windows .cta-section h2 {
   font-family: "Noto Serif JP", "Yu Mincho", "YuMincho", "MS PMincho", serif;
-  font-weight: 700;
+  font-weight: 900;
   letter-spacing: 0.01em;
+  color: #2a231d;
+  -webkit-text-stroke: 0.15px currentColor;
 }
 
 html.is-windows .hero-lead strong,
+html.is-windows .hero-points,
+html.is-windows .hero-note,
+html.is-windows .hero-lead,
 html.is-windows .brand,
 html.is-windows .button,
 html.is-windows .site-nav a {
   font-weight: 700;
+}
+
+html.is-windows .hero-lead strong,
+html.is-windows .button,
+html.is-windows .brand {
+  color: #2a231d;
 }
 
 .hero-lead,
