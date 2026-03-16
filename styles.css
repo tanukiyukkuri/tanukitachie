@@ -30,7 +30,7 @@ html {
 
 body {
   margin: 0;
-  font-family: "MS PGothic", "Zen Kaku Gothic New", sans-serif;
+  font-family: "Hiragino Sans", "Yu Gothic", "YuGothic", "Meiryo", "MS PGothic", sans-serif;
   font-size: 16px;
   line-height: 1.75;
   color: var(--ink);
@@ -153,7 +153,7 @@ a:hover {
 .section-heading h2,
 .cta-section h2 {
   margin: 0 0 12px;
-  font-family: "MS Mincho", "Shippori Mincho", serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", "Shippori Mincho", serif;
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   line-height: 1.35;
   font-weight: 700;
