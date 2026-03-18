@@ -78,6 +78,7 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   color: var(--ink);
   text-decoration: none;
   font-weight: 700;
@@ -100,6 +101,7 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 14px;
+  min-width: 0;
   font-size: 0.92rem;
 }
 
@@ -411,8 +413,18 @@ html.is-windows .brand {
 .spec-card,
 .terms-card,
 .faq-list details {
+  min-width: 0;
   padding: 12px;
   border: 1px solid var(--line);
+}
+
+.content-item p,
+.terms-card p,
+.terms-card li,
+.faq-list p,
+.faq-list summary {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .feature-number {
