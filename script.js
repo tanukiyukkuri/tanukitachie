@@ -276,7 +276,7 @@ const openDownloadModal = (trigger) => {
   clearDownloadTimers();
   resetDownloadCountdown();
   if (downloadCountdownLabel) {
-    downloadCountdownLabel.textContent = trigger.dataset.interstitialLabel || "ダウンロードを開始します";
+    downloadCountdownLabel.textContent = trigger.dataset.interstitialLabel || "ダウンロードします";
   }
   downloadModal.classList.remove("is-hidden");
   downloadModal.setAttribute("aria-hidden", "false");
