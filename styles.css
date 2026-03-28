@@ -596,18 +596,24 @@ html.is-windows .download-modal-countline {
 }
 
 .download-modal-countline {
-  margin: 0 0 16px;
+  position: absolute;
+  top: 18px;
+  left: 26px;
+  right: 70px;
+  margin: 0;
   color: var(--accent);
   font-size: clamp(1rem, 2vw, 1.15rem);
   font-weight: 700;
   letter-spacing: 0.01em;
+  line-height: 1.4;
+  text-align: left;
 }
 
 .download-modal-card {
   position: relative;
   width: min(460px, calc(100% - 28px));
   min-height: 0;
-  padding: 26px 26px 32px;
+  padding: 68px 26px 32px;
   border-radius: 14px;
   background: #fffdfa;
   box-shadow: 0 22px 48px rgba(20, 15, 12, 0.28);
@@ -772,7 +778,7 @@ html.is-windows .download-modal-countline {
   .download-modal-card {
     width: min(420px, calc(100% - 24px));
     min-height: 0;
-    padding: 22px 18px 28px;
+    padding: 64px 18px 28px;
   }
 
   .download-modal-card h2 {
@@ -782,6 +788,12 @@ html.is-windows .download-modal-countline {
   .download-modal-close {
     top: 6px;
     right: 6px;
+  }
+
+  .download-modal-countline {
+    top: 16px;
+    left: 18px;
+    right: 56px;
   }
 
   .download-ad-button {
