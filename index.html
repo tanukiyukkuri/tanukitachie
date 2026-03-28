@@ -61,7 +61,7 @@
         // GA4 の Measurement ID を入れる（例: "G-XXXXXXXXXX"）
         ga4MeasurementId: "G-11DWJSBDT2",
         // サポーター募集リンクを使う場合だけ設定する
-        sponsorUrl: "",
+        sponsorUrl: "https://yukkuriautomationtool.com/",
         // 実装確認時だけ true にすると console にイベント内容を表示する
         debug: false
       };
@@ -346,10 +346,9 @@
             <p class="eyebrow">更新履歴</p>
             <h2>最近の更新</h2>
           </div>
-          <div class="contents-list" data-reveal>
-            <div class="content-item">
-              <p><strong>2026年3月18日</strong>: たぬき式ゆっくりの配布を開始しました。</p>
-            </div>
+          <div class="updates-list" data-reveal>
+            <p><strong>2026年3月28日</strong>: たぬき式ゆっくりのサポーターを追加しました。ありがとうございます！</p>
+            <p><strong>2026年3月18日</strong>: たぬき式ゆっくりの配布を開始しました。</p>
           </div>
         </section>
 
@@ -454,14 +453,25 @@
     </div>
 
     <div class="download-modal is-hidden" id="downloadModal" aria-hidden="true" role="dialog" aria-labelledby="downloadModalTitle">
-      <p class="download-modal-countline"><span id="downloadCountdown">5</span>秒後に<span id="downloadCountdownLabel">ダウンロードを開始します</span></p>
       <div class="download-modal-card">
+        <p class="download-modal-countline"><span id="downloadCountdown">5</span>秒後に<span id="downloadCountdownLabel">ダウンロードを開始します</span></p>
         <button class="download-modal-close" type="button" id="downloadCloseButton" aria-label="案内を閉じる">×</button>
-        <h2 id="downloadModalTitle">サポーター募集中</h2>
-        <p class="download-modal-subtitle">今後の展開を支えてくださる方へ</p>
-        <p class="download-modal-copy">
-          たぬき式ゆっくりのページ維持、コミュニティ運営などを支えてくださるサポーターを募集しています。
-        </p>
+        <h2 id="downloadModalTitle">サポーター紹介</h2>
+        <a
+          class="download-ad"
+          href="https://yukkuriautomationtool.com/"
+          target="_blank"
+          rel="noreferrer"
+          data-track-click="sponsor_banner"
+          id="downloadAdLink"
+        >
+          <img
+            class="download-ad-image"
+            src="./assets/sponcer_banner_square.png"
+            alt="ゆっくり自動化ツール"
+          />
+          <span class="download-ad-button">開く</span>
+        </a>
       </div>
     </div>
 
