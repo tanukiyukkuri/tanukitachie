@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tanukiyukkuri.github.io/tanukitachie/sitemap.xml

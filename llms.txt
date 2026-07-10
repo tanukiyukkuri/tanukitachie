@@ -1,0 +1,28 @@
+# たぬき式ゆっくり
+
+> ゆっくり解説、ゆっくり実況、配信、サムネイル制作などに使える、完全無料のPNG立ち絵素材です。
+
+公式配布ページ: https://tanukiyukkuri.github.io/tanukitachie/
+
+## 要点
+
+- YMM4（ゆっくりMovieMaker4）の動く立ち絵向けです。
+- まばたき、口パク用のパーツ差分を収録しています。
+- 収益化、商用利用、改変、再配布、改変素材の販売が可能です。
+- クレジットと事前連絡は原則不要です。
+- 利用前に配布ZIP内の README.txt と TERMS.txt の確認が必要です。
+- 「たぬき霊夢」「たぬき魔理沙」など東方Projectの二次創作素材は、東方Projectのガイドラインにも従う必要があります。
+- 個別サポートや問い合わせ対応は行っていません。
+
+## 収録内容
+
+- PNG立ち絵
+- 表情および動作用パーツ差分
+- README.txt
+- TERMS.txt
+
+## 参照先
+
+- 配布ページとFAQ: https://tanukiyukkuri.github.io/tanukitachie/
+- 配布ZIP: https://tanukiyukkuri.github.io/tanukitachie/downloads/tanuki-yukkuri.zip
+- 東方Projectガイドライン: https://touhou-project.news/guideline/
